@@ -24,7 +24,7 @@ It includes authentication (JWT), database integration (PostgreSQL), and contain
 
 ### 1. Clone repository
 
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git clone https://github.com/34497225/fastapi-jwt-task-api.git
 
 ### 2. Run with Docker
 
