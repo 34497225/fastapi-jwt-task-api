@@ -1,57 +1,65 @@
-FastAPI JWT Task Manager API
-📌 Description
+# FastAPI Task Manager (Docker + PostgreSQL)
 
-A backend RESTful API built with FastAPI, featuring JWT authentication and task management.
+## 📌 Overview
 
-🚀 Features
+This is a backend API project built with FastAPI.
+It includes authentication (JWT), database integration (PostgreSQL), and containerization using Docker.
 
-User registration & login
+## 🚀 Features
 
-JWT authentication
+* User Registration & Login (JWT Authentication)
+* CRUD API for Tasks
+* PostgreSQL Database
+* Docker & Docker Compose setup
 
-Protected endpoints
+## 🛠 Tech Stack
 
-Task CRUD operations
+* FastAPI
+* PostgreSQL
+* SQLAlchemy
+* Docker / Docker Compose
+* JWT Authentication
 
-🛠 Tech Stack
+## ⚙️ Setup (Local)
 
-FastAPI
+### 1. Clone repository
 
-SQLAlchemy
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
 
-SQLite
+### 2. Run with Docker
 
-JWT (python-jose)
+docker-compose up --build
 
-Passlib (bcrypt)
+### 3. Open API docs
 
-📂 Structure
+http://localhost:8000/docs
+
+## 📂 Project Structure
 
 app/
 ├── main.py
 ├── models.py
 ├── schemas.py
-├── crud.py
+├── database.py
 ├── auth.py
-└── routers/
 
-▶️ Run
+## 🔐 Authentication
 
-uvicorn app.main --reload
+* Uses JWT token
+* Login to get token
+* Use "Authorize" in Swagger UI
 
-🔐 API
+## 🐳 Docker
 
-POST /register
-POST /login
-GET /tasks
-POST /tasks
-PUT /tasks/{id}
-DELETE /tasks/{id}
+* API + PostgreSQL via docker-compose
+* Persistent database using volumes
 
-🧠 What I Learned
+## 📈 Future Improvements
 
-Implemented JWT authentication
+* User-task ownership
+* Pagination
+* Deployment to cloud (AWS / Render)
 
-Built modular backend architecture
+## 👨‍💻 Author
 
-Designed RESTful APIs
+Your Name

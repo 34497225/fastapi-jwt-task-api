@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 
 class Task(BaseModel):
     title: str
@@ -11,7 +11,7 @@ class TaskOut(Task):
         
 class UserCreate(BaseModel):
     username: str
-    password: str
+    password: str = Field(..., min_length=1, max_length=72)
 
 class UserOut(BaseModel):
     id: int
