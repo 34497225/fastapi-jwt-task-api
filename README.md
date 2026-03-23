@@ -63,3 +63,9 @@ app/
 ## 👨‍💻 Author
 
 Your Name
+
+### Environment Variables
+To run this project, you need to create a `.env` file in the root directory with the following variables:
+- `DATABASE_URL`: Your database connection string.
+- `SECRET_KEY`: A secret string for JWT encoding.
+- `ALGORITHM`: Encryption algorithm (default: HS256)
