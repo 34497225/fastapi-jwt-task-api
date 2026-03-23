@@ -1,8 +1,15 @@
+
+import os
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# SQLite 資料庫（存在本地檔案）
-SQLALCHEMY_DATABASE_URL = "postgresql://user:password@db:5432/mydb"
+# 🔹 載入 .env 檔案中的變數
+load_dotenv()
+
+# 🔹 從環境變數讀取 DATABASE_URL
+# 如果環境中沒有 DATABASE_URL，則預設連線到本地 SQLite (方便完全沒資料庫時測試)
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
 # 建立 engine（連接資料庫）
 engine = create_engine(

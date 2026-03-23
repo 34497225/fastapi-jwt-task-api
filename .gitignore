@@ -1,0 +1,53 @@
+🔹 環境變數檔案
+
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+🔹 Python 相關
+
+pycache/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+🔹 虛擬環境
+
+.venv
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+🔹 本地資料庫與紀錄
+
+*.db
+*.sqlite3
+test.db
+.pdm.toml
+.python-version
+
+🔹 Docker 相關 (選配，如果你不想上傳 docker volume 資料)
+
+.docker/

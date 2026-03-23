@@ -9,6 +9,11 @@ services:
     depends_on:
       - db
     restart: always
+    environment:
+      # 🔹 這裡會覆蓋 .env 裡的設定，讓容器內部連到 db 服務
+      - DATABASE_URL=postgresql://user:password@db:5432/mydb
+      - SECRET_KEY=yoursecretkey_put_here
+      - ALGORITHM=HS256
 
   db:
     image: postgres:15
