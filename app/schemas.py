@@ -1,4 +1,4 @@
-from pydantic import BaseModel,Field
+from pydantic import BaseModel,Field,constr
 
 class Task(BaseModel):
     title: str
@@ -10,7 +10,7 @@ class TaskOut(Task):
         orm_mode = True 
         
 class UserCreate(BaseModel):
-    username: str = Field(..., min_length=1, max_length=50)
+    username: constr(strip_whitespace=True, min_length=1)
     password: str = Field(..., min_length=1, max_length=72)
 
 class UserOut(BaseModel):
