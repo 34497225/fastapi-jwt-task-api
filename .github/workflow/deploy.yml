@@ -1,0 +1,27 @@
+name: Deploy to Amazon EC2
+
+on:
+  push:
+    branches: [ "main" ]  # 當程式碼推送到 main 分支時觸發
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy to EC2 via SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd ~/fastapi-jwt-task-api
+          git pull origin main
+          # 使用你上次成功的橫槓版指令
+          sudo /usr/local/bin/docker-compose up --build -d
+          # 清理舊的、沒在用的 Image，節省 t3.micro 的空間
+          docker image prune -f
