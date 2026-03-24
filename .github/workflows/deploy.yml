@@ -8,6 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    # ... 前面省略 ...
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -20,6 +21,13 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd ~/fastapi-jwt-task-api
-          git pull origin main
+          git fetch --all
+          git reset --hard origin/main
+          
+          printf "DATABASE_URL=%s\n" "${{ secrets.DATABASE_URL }}" > .env
+          printf "SECRET_KEY=%s\n" "${{ secrets.SECRET_KEY }}" >> .env
+          printf "ALGORITHM=HS256\n" >> .env
+          printf "ACCESS_TOKEN_EXPIRE_MINUTES=30\n" >> .env
+
           sudo /usr/local/bin/docker-compose up --build -d
           docker image prune -f
