@@ -1,24 +1,29 @@
-version: "3.9"
-
 services:
+  # ---------------------------------------------------------
+  # 1. FastAPI 應用程式 (API 服務)
+  # ---------------------------------------------------------
   api:
     build: .
     container_name: fastapi_app
     ports:
       - "8000:8000"
+    # 🔹 保持你原本的設定，連向名為 "db" 的服務
     depends_on:
       - db
     restart: always
-    environment:
-      # 🔹 這裡會覆蓋 .env 裡的設定，讓容器內部連到 db 服務
-      - DATABASE_URL=postgresql://user:password@db:5432/mydb
-      - SECRET_KEY=yoursecretkey_put_here
-      - ALGORITHM=HS256
+    # 🔹 修改點：改用 env_file 讀取 .env
+    # 這樣 GitHub Actions 產生的秘密才會生效，且不會把密碼寫死在 yml 裡
+    env_file:
+      - .env
 
+  # ---------------------------------------------------------
+  # 2. 資料庫服務 (使用你原本的 "db" 名稱)
+  # ---------------------------------------------------------
   db:
     image: postgres:15
     container_name: postgres_db
     restart: always
+    # 保留你原本的環境變數，這部分用於初始化資料庫
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -26,6 +31,23 @@ services:
     ports:
       - "5432:5432"
     volumes:
-    - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+
+  # ---------------------------------------------------------
+  # 3. 🔹 新增：Uptime Kuma 專業監控工具
+  # ---------------------------------------------------------
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    volumes:
+      - uptime-kuma-data:/app/data
+    ports:
+      - "3001:3001"  # 監控面板入口
+    restart: always
+
+# ---------------------------------------------------------
+# 資料持久化宣告 (Volumes)
+# ---------------------------------------------------------
 volumes:
   postgres_data:
+  uptime-kuma-data: # 🔹 這是給監控工具存數據用的空間
