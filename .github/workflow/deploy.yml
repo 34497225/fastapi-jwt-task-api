@@ -21,7 +21,5 @@ jobs:
         script: |
           cd ~/fastapi-jwt-task-api
           git pull origin main
-          # 使用你上次成功的橫槓版指令
           sudo /usr/local/bin/docker-compose up --build -d
-          # 清理舊的、沒在用的 Image，節省 t3.micro 的空間
           docker image prune -f
