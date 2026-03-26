@@ -4,9 +4,9 @@
 
 🌐 線上展示與監控
 
-API 互動式文件 (Swagger UI): http://43.213.25.222:8000/docs
+API 互動式文件 (Swagger UI): http://43.212.25.222:8000/docs
 
-系統實時狀態頁 (Status Page): http://43.213.25.222:3001/status/server
+系統實時狀態頁 (Status Page): http://43.212.25.222:3001/status/server
 
 🛠️ 技術棧 (Tech Stack)
 
