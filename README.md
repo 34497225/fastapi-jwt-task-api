@@ -1,96 +1,103 @@
-🚀 FastAPI 全自動化維運專案：Task Management API
+🚀 FastAPI Task Management API | 企業級任務管理系統
 
-這是一個具備 CI/CD 自動化部署、環境變數安全管理與即時監控系統的後端專案。旨在展示如何將現代 DevOps 流程應用於雲端生產環境。
+這是一個基於 FastAPI + PostgreSQL 構建的高性能 RESTful API 服務。本專案不僅實現了完整的任務 CRUD 邏輯與 JWT 無狀態身份驗證，更導入了現代化的 Docker 容器化 與 GitHub Actions CI/CD 流程，達成 AWS 雲端的 Zero-Touch 自動化部署。
 
-🌐 線上展示與監控
+🌐 線上 API 文件 (Swagger UI)
 
-API 互動式文件 (Swagger UI): http://43.212.25.222:8000/docs
+FastAPI 內建了互動式的 API 測試介面，您可以直接點擊下方連結進行線上測試：
 
-系統實時狀態頁 (Status Page): http://43.212.25.222:3001/status/server
+    📜 互動式 API 文件 (Live Demo): http://43.212.25.222:8000/docs
+
+    📊 系統實時狀態 (Uptime Kuma): http://43.212.25.222:3001
 
 🛠️ 技術棧 (Tech Stack)
 
-後端框架: FastAPI (Python 3.9+)
+    後端與資料庫 (Backend & Database)
 
-資料庫: PostgreSQL 15 (Dockerized)
+    核心框架: FastAPI (Python 3.9+) - 極速非同步網頁框架
 
-容器化技術: Docker & Docker Compose
+    關聯式資料庫: PostgreSQL 15
 
-雲端平台: AWS EC2 (ARM64 / Graviton 處理器)
+    ORM 框架: SQLAlchemy - 處理資料庫映射與查詢
 
-自動化維運: GitHub Actions, GitHub Secrets, Uptime Kuma
+    身份驗證: OAuth2 with Password (and hashing), JWT (JSON Web Tokens)
 
-🏗️ 系統架構亮點
+    密碼加密: Passlib (Bcrypt)
 
-1. 全自動 CI/CD 流水線
+    維運與基礎設施 (DevOps & Infrastructure)
 
-實現方式: 使用 GitHub Actions 監聽 main 分支變動。
+    容器化技術: Docker & Docker Compose
 
-部署邏輯: 當代碼推送到 GitHub 時，自動觸發 SSH 連線至 AWS EC2，執行遠端編譯與熱更新，達成 Zero-Touch Deployment。
+    雲端主機: AWS EC2 (t3.micro)
 
-2. 環境變數安全隔離 (Secret Injection)
+    自動化部署: GitHub Actions (CI/CD Pipeline)
 
-遵循 Secrets Separation 原則：敏感資訊（如資料庫連線字串、JWT 密鑰）絕不存入 Git。
+    網頁伺服器: Uvicorn (ASGI)
 
-部署期間透過 GitHub Secrets 動態注入伺服器端的 .env，確保生產環境密鑰不落地。
+🏗️ 系統架構圖 (Architecture Diagram)
 
-3. 可觀測性與即時監控 (Monitoring)
+[Client / 前端] -> [AWS 防火牆 (Port 8000)] -> [Uvicorn ASGI 伺服器]
+                                                    |
+                                            [FastAPI 應用程式]
+                                                    |
+                                      +-------------+-------------+
+                                      |                           |
+                            [JWT Auth 驗證模組]         [SQLAlchemy ORM]
+                                                                  |
+                                                    [PostgreSQL 15 資料庫]
 
-整合 Uptime Kuma 進行 24/7 持續監控。
 
-具備自動重試機制與公開狀態頁，即時追蹤 API 延遲 (Latency) 與在線率 (Uptime)。
+🚀 核心專案亮點 (Project Highlights)
 
-4. 資源優化與資料持久化
+1. 現代化 JWT 身份驗證機制
 
-記憶體優化: 在 AWS t3.micro (1GB RAM) 環境下，手動配置 2GB Swap 空間，確保 Docker 編譯穩定性。
+    實作 OAuth2 密碼授權流程，配發帶有過期時間的 JWT Access Token。
 
-持久化儲存: 使用 Docker Volumes 管理資料庫檔案，確保服務更新或重啟時資料不遺失。
+    密碼透過 bcrypt 進行單向雜湊加密存儲，保障使用者帳號安全。
 
-📂 專案結構
+    所有任務 API (/tasks) 皆受到依賴注入 (Dependency Injection) 的保護，確保資料隔離。
 
-app/
-├── main.py        # 程式入口與路由整合
-├── models.py      # SQLAlchemy 資料庫模型
-├── schemas.py     # Pydantic 資料驗證模型
-├── database.py    # 資料庫連線配置
-├── auth.py        # JWT 驗證與密碼雜湊邏輯
-├── routers/       # 模組化路由管理 (Auth, Tasks)
-.github/           # GitHub Actions CI/CD 配置
-docker-compose.yml # 容器編排配置
+2. 生產級 DevOps 與自動化 (CI/CD)
+
+    環境隔離：透過 Docker Compose 將 FastAPI 與 PostgreSQL 打包，確保本地開發與雲端生產環境 100% 一致。
+
+    Zero-Touch 部署：編寫 GitHub Actions 流水線，當代碼推送到 main 分支時，自動透過 SSH 登入 AWS 進行 docker-compose up --build -d 滾動更新。
+
+    機密管理 (Secrets)：嚴格遵守安全規範，將 DATABASE_URL 與 SECRET_KEY 等敏感資訊存放於 GitHub Secrets，於部署時動態注入，實現密鑰不落地。
 
 
 ⚙️ 快速啟動 (Local Development)
 
-1. 複製專案
+若您想在本地端運行此專案進行測試，請依照以下步驟操作：
 
-git clone https://github.com/34497225/fastapi-jwt-task-api.git
-cd fastapi-jwt-task-api
+1. 取得程式碼
+
+    git clone https://github.com/34497225/fastapi-jwt-task-api.git
+    cd fastapi-jwt-task-api
 
 
 2. 設定環境變數
 
-請在根目錄建立 .env 檔案：
+在專案根目錄建立 .env 檔案，並填入以下內容：
 
-DATABASE_URL=postgresql://user:password@db:5432/mydb
-SECRET_KEY=your_super_secret_key
-ALGORITHM=HS256
-
-
-3. 使用 Docker 啟動
-
-docker-compose up --build -d
+    # 本地端測試用 (指向 Docker 內的 db)
+    DATABASE_URL=postgresql://user:password@db:5432/mydb
+    SECRET_KEY=your_super_secret_key_for_local_dev_only
+    ALGORITHM=HS256
+    ACCESS_TOKEN_EXPIRE_MINUTES=30
 
 
-🛡️ 安全維護 (Security & Admin)
+3. 一鍵啟動 (Docker Compose)
 
-資料庫管理: 支援透過 DBeaver 進行加密遠端維護 (Port 5432)。
+    請確保您的電腦已安裝 Docker Desktop。
 
-日誌查詢:
+    docker compose up --build -d
 
-docker compose logs -f api (API 運作日誌)
 
-docker logs uptime-kuma (監控系統日誌)
+👉 啟動後，請打開瀏覽器訪問 http://localhost:8000/docs 即可看到自動生成的 Swagger UI 並開始測試 API！
 
-👨‍💻 作者
+👨‍💻 作者 (Author)
 
-smg60214 - GitHub
+smg60214 * GitHub: https://github.com/34497225
+
+專注於後端開發、雲端架構 (AWS) 與 SRE 維運自動化。
